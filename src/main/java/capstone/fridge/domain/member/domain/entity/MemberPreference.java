@@ -21,7 +21,7 @@ public class MemberPreference {
     private String ingredientName; // 예: "새우", "오이"
 
     @Enumerated(EnumType.STRING)
-    private PreferenceType type; // ALLERGY(알레르기), DISLIKE(기피) [cite: 235]
+    private PreferenceType type; // ALLERGY(알레르기), DISLIKE(기피)
 
     @Builder
     public MemberPreference(Member member, String ingredientName, PreferenceType type) {

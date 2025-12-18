@@ -16,7 +16,7 @@ public class RecipeIngredient {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    // 만개의 레시피 '[재료]', '[양념]' 구분 텍스트 [cite: 28]
+    // 만개의 레시피 '[재료]', '[양념]' 구분 텍스트
     private String bundleName;
 
     @Column(nullable = false)
