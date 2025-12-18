@@ -28,6 +28,8 @@ public class FridgeIngredient extends BaseTimeEntity {
 
     private LocalDate expiryDate; // 유통기한
 
+    private String category;
+
     private String storageCompartment; // 카테고리 (육류, 채소 등)
 
     @Enumerated(EnumType.STRING)
@@ -40,11 +42,12 @@ public class FridgeIngredient extends BaseTimeEntity {
     }
 
     @Builder
-    public FridgeIngredient(Member member, String name, String quantity, LocalDate expiryDate, String storageCompartment, InputMethod inputMethod) {
+    public FridgeIngredient(Member member, String name, String quantity, LocalDate expiryDate, String category, String storageCompartment, InputMethod inputMethod) {
         this.member = member;
         this.name = name;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
+        this.category = category;
         this.storageCompartment = storageCompartment;
         this.inputMethod = inputMethod;
     }

@@ -9,7 +9,12 @@ import org.springframework.http.HttpStatus;
 public enum SuccessStatus implements BaseCode {
 
     // Common
-    OK(HttpStatus.OK, "COMMON_200", "성공입니다.");
+    OK(HttpStatus.OK, "COMMON_200", "성공입니다."),
+
+    // Member
+    MEMBER_INFO(HttpStatus.OK, "MEMBER_200", "성공적으로 유저 정보를 조회했습니다."),
+    MEMBER_PREFERENCE(HttpStatus.ACCEPTED, "MEMBER_201", "성공적으로 유저 건강 정보 및 기호를 수정했습니다."),
+    MEMBER_SCRAPS(HttpStatus.OK, "MEMBER_202", "성공적으로 유저의 찜한 레시피 목록을 조회했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

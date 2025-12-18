@@ -29,7 +29,7 @@ public class Recipe extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String description; // 요리 설명
 
-    // 메타 정보 [cite: 17]
+    // 메타 정보
     private String servings; // 인분 (예: 2인분)
     private String cookTime; // 시간 (예: 30분이내)
     private String difficulty; // 난이도 (예: 아무나)

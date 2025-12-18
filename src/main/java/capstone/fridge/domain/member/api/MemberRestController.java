@@ -1,0 +1,64 @@
+package capstone.fridge.domain.member.api;
+
+import capstone.fridge.domain.member.application.MemberService;
+import capstone.fridge.domain.member.dto.MemberRequestDTO;
+import capstone.fridge.domain.member.dto.MemberResponseDTO;
+import capstone.fridge.global.common.response.BaseResponse;
+//import capstone.fridge.global.config.security.PrincipalDetails;
+import capstone.fridge.global.error.code.status.SuccessStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class MemberRestController {
+
+    private final MemberService memberService;
+
+    @GetMapping("/me")
+    @Operation(summary = "내 정보 조회 API", description = "사용자의 정보에 대한 정보를 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 조회되었습니다.")
+    })
+    public BaseResponse<MemberResponseDTO.UserInfoDTO> getUserInfo(
+            //@AuthenticationPrincipal PrincipalDetails principalDetails
+            @RequestParam Long MemberId
+    ) {
+        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
+        MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(MemberId);
+        return BaseResponse.onSuccess(SuccessStatus.MEMBER_INFO, result);
+    }
+
+    @PatchMapping("/me/preferences")
+    @Operation(summary = "건강 정보 및 기호 수정 API", description = "사용자의 알레르기 및 기호 식품에 대한 정보를 수정")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 수정되었습니다.")
+    })
+    public BaseResponse<MemberResponseDTO.UserPreferencesDTO> setUserPreferences(
+            //@AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam Long MemberId,
+            @RequestBody MemberRequestDTO.UserPreferencesDTO preferences
+    ) {
+        //MemberResponseDTO.UserPreferencesDTO result = memberService.setUserPreferences(principalDetails.getMember().getId(), preferences);
+        MemberResponseDTO.UserPreferencesDTO result = memberService.setUserPreferences(MemberId, preferences);
+        return BaseResponse.onSuccess(SuccessStatus.MEMBER_PREFERENCE, result);
+    }
+
+    @GetMapping("/me/scraps")
+    @Operation(summary = "찜한 레시피 목록 조회 API", description = "사용자가 찜한 레시피 목록 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 조회되었습니다.")
+    })
+    public BaseResponse<MemberResponseDTO.UserScrapsDTO> getUserScraps(
+            //@AuthenticationPrincipal PrincipalDetails principalDetails
+            @RequestParam Long MemberId
+    ) {
+        //MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(principalDetails.getMember().getId());
+        MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(MemberId);
+        return BaseResponse.onSuccess(SuccessStatus.MEMBER_SCRAPS, result);
+    }
+}
