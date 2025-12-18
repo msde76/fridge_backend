@@ -1,0 +1,61 @@
+package capstone.fridge.domain.recipe.domain.entity;
+
+import capstone.fridge.domain.model.entity.BaseTimeEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "recipe", indexes = {
+        @Index(name = "idx_original_id", columnList = "originalRecipeId") // 크롤링 중복 방지 인덱스
+})
+public class Recipe extends BaseTimeEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recipe_id")
+    private Long id;
+
+    // 만개의 레시피 URL 상의 ID (중복 크롤링 방지용)
+    @Column(unique = true, nullable = false)
+    private Long originalRecipeId;
+
+    @Column(nullable = false)
+    private String title; // 요리명 [cite: 13]
+
+    @Column(columnDefinition = "TEXT")
+    private String description; // 요리 설명 [cite: 19]
+
+    private String thumbnail; // 대표 이미지
+
+    // 메타 정보 [cite: 17]
+    private String servings; // 인분 (예: 2인분)
+    private String cookTime; // 시간 (예: 30분이내)
+    private String difficulty; // 난이도 (예: 아무나)
+
+    // 정렬을 위한 외부 데이터 (선택사항)
+    private Long externalViews; // 조회수
+    private Long externalScraps; // 스크랩수
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeIngredient> ingredients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecipeStep> steps = new ArrayList<>();
+
+    @Builder
+    public Recipe(Long originalRecipeId, String title, String description, String thumbnail,
+                  String servings, String cookTime, String difficulty, Long externalViews) {
+        this.originalRecipeId = originalRecipeId;
+        this.title = title;
+        this.description = description;
+        this.thumbnail = thumbnail;
+        this.servings = servings;
+        this.cookTime = cookTime;
+        this.difficulty = difficulty;
+        this.externalViews = externalViews;
+    }
+}
