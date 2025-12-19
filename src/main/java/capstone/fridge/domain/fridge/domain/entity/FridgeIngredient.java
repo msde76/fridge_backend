@@ -27,7 +27,9 @@ public class FridgeIngredient extends BaseTimeEntity {
 
     private String quantity; // 수량 (예: 1모, 300g)
 
-    private LocalDate expiryDate; // 유통기한 [cite: 416]
+    private LocalDate expiryDate; // 유통기한
+
+    private String category;
 
     private String storageCategory; // 카테고리 (육류, 채소 등)
 
@@ -37,9 +39,16 @@ public class FridgeIngredient extends BaseTimeEntity {
     private FridgeSlot fridgeSlot;
 
     @Enumerated(EnumType.STRING)
-    private InputMethod inputMethod; // MANUAL, OCR [cite: 413, 415]
+    private InputMethod inputMethod; // MANUAL, OCR
+
+    private Long ingredientDataId;
+
+    public void linkData(Long dataId) {
+        this.ingredientDataId = dataId;
+    }
 
     @Builder
+
     public FridgeIngredient(
             Member member,
             String name,
@@ -49,12 +58,16 @@ public class FridgeIngredient extends BaseTimeEntity {
             FridgeSlot fridgeSlot,
             InputMethod inputMethod
     ) {
+
+    
         this.member = member;
         this.name = name;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
+
         this.storageCategory = storageCategory;
         this.fridgeSlot = fridgeSlot;
+
         this.inputMethod = inputMethod;
     }
 

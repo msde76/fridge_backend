@@ -24,14 +24,12 @@ public class Recipe extends BaseTimeEntity {
     private Long originalRecipeId;
 
     @Column(nullable = false)
-    private String title; // 요리명 [cite: 13]
+    private String title; // 요리명
 
     @Column(columnDefinition = "TEXT")
-    private String description; // 요리 설명 [cite: 19]
+    private String description; // 요리 설명
 
-    private String thumbnail; // 대표 이미지
-
-    // 메타 정보 [cite: 17]
+    // 메타 정보
     private String servings; // 인분 (예: 2인분)
     private String cookTime; // 시간 (예: 30분이내)
     private String difficulty; // 난이도 (예: 아무나)
@@ -47,12 +45,11 @@ public class Recipe extends BaseTimeEntity {
     private List<RecipeStep> steps = new ArrayList<>();
 
     @Builder
-    public Recipe(Long originalRecipeId, String title, String description, String thumbnail,
+    public Recipe(Long originalRecipeId, String title, String description,
                   String servings, String cookTime, String difficulty, Long externalViews) {
         this.originalRecipeId = originalRecipeId;
         this.title = title;
         this.description = description;
-        this.thumbnail = thumbnail;
         this.servings = servings;
         this.cookTime = cookTime;
         this.difficulty = difficulty;
