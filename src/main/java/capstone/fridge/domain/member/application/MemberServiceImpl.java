@@ -12,11 +12,13 @@ import capstone.fridge.domain.scrap.domain.entity.RecipeScrap;
 import capstone.fridge.domain.scrap.domain.repository.RecipeScrapRepository;
 import capstone.fridge.global.error.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

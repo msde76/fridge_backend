@@ -15,7 +15,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // Member
-    _MEMBER_NOT_FOUND(HttpStatus.FORBIDDEN, "MEMBER_4000", "없는 유저 입니다.");
+    _MEMBER_NOT_FOUND(HttpStatus.FORBIDDEN, "MEMBER_4000", "없는 유저 입니다."),
+
+    // Recipe
+    _RECIPE_SEARCH_FAIL(HttpStatus.BAD_REQUEST, "RECIPE_4000", "레시피 추천에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
