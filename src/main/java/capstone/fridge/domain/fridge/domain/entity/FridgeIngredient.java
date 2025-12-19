@@ -5,6 +5,7 @@ import capstone.fridge.domain.model.entity.BaseTimeEntity;
 import capstone.fridge.domain.model.enums.InputMethod;
 import jakarta.persistence.*;
 import lombok.*;
+import capstone.fridge.domain.fridge.domain.enums.FridgeSlot;
 
 import java.time.LocalDate;
 
@@ -30,7 +31,12 @@ public class FridgeIngredient extends BaseTimeEntity {
 
     private String category;
 
-    private String storageCompartment; // 카테고리 (육류, 채소 등)
+    private String storageCategory; // 카테고리 (육류, 채소 등)
+
+    // 실제 배치된 칸(룰 출력값)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true) // 처음엔 null 가능(자동배치 전)
+    private FridgeSlot fridgeSlot;
 
     @Enumerated(EnumType.STRING)
     private InputMethod inputMethod; // MANUAL, OCR
@@ -42,13 +48,30 @@ public class FridgeIngredient extends BaseTimeEntity {
     }
 
     @Builder
-    public FridgeIngredient(Member member, String name, String quantity, LocalDate expiryDate, String category, String storageCompartment, InputMethod inputMethod) {
+
+    public FridgeIngredient(
+            Member member,
+            String name,
+            String quantity,
+            LocalDate expiryDate,
+            String storageCategory,
+            FridgeSlot fridgeSlot,
+            InputMethod inputMethod
+    ) {
+
+    
         this.member = member;
         this.name = name;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
-        this.category = category;
-        this.storageCompartment = storageCompartment;
+
+        this.storageCategory = storageCategory;
+        this.fridgeSlot = fridgeSlot;
+
         this.inputMethod = inputMethod;
+    }
+
+    public void assignSlot(FridgeSlot slot) {
+        this.fridgeSlot = slot;
     }
 }
