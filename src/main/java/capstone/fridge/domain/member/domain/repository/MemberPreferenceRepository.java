@@ -9,4 +9,6 @@ import java.util.List;
 public interface MemberPreferenceRepository extends JpaRepository<MemberPreference, Long> {
 
     List<MemberPreference> findAllByMember(Member member);
+
+    List<MemberPreference> findAllByMemberId(Long memberId);
 }
