@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Component
 public class MemberConverter {
 
-    private static final String S3_BASE_URL = "https://your-s3-bucket-url.com"; // 실제 버킷 주소로 수정 필요
+    private static final String S3_BASE_URL = "https://capstone-fridge.s3.ap-northeast-2.amazonaws.com/recipes/"; // 실제 버킷 주소로 수정 필요
 
     public static MemberResponseDTO.UserInfoDTO toUserInfoDTO(Member member) {
         return MemberResponseDTO.UserInfoDTO.builder()
