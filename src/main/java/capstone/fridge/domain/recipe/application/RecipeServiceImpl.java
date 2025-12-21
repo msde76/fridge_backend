@@ -5,6 +5,7 @@ import capstone.fridge.domain.member.domain.entity.Member;
 import capstone.fridge.domain.member.domain.entity.MemberPreference;
 import capstone.fridge.domain.member.domain.repository.MemberPreferenceRepository;
 import capstone.fridge.domain.member.domain.repository.MemberRepository;
+import capstone.fridge.domain.member.exception.memberException;
 import capstone.fridge.domain.recipe.converter.RecipeConverter;
 import capstone.fridge.domain.recipe.domain.entity.Recipe;
 import capstone.fridge.domain.recipe.domain.entity.RecipeIngredient;
@@ -50,11 +51,11 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeScrapRepository recipeScrapRepository;
 
     @Override
-    public List<RecipeResponseDTO.RecipeDTO> recommendRecipes(Long memberId) {
+    public List<RecipeResponseDTO.RecipeDTO> recommendRecipes(String kakaoId) {
 
         // 1. 멤버 검증
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new recipeException(ErrorStatus._MEMBER_NOT_FOUND));
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
         // 2. 사용자의 냉장고 재료 가져오기
         List<String> fridgeIngredients = fridgeIngredientRepository.findIngredientNamesByMemberId(member.getId());
@@ -85,11 +86,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RecipeResponseDTO.RecipeDTO> recommendMissingRecipes(Long memberId) {
+    public List<RecipeResponseDTO.RecipeDTO> recommendMissingRecipes(String kakaoId) {
 
         // 1. 멤버 검증
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new recipeException(ErrorStatus._MEMBER_NOT_FOUND));
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
+
+        Long memberId = member.getId();
 
         // 2. 사용자의 냉장고 재료 가져오기
         List<String> ingredients = fridgeIngredientRepository.findIngredientNamesByMemberId(member.getId());
@@ -164,11 +167,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeResponseDTO.RecipeDTO> recommendScrapsRecipes(Long memberId) {
+    public List<RecipeResponseDTO.RecipeDTO> recommendScrapsRecipes(String kakaoId) {
 
         // 1. 사용자 검증
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new recipeException(ErrorStatus._MEMBER_NOT_FOUND));
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
+
+        Long memberId = member.getId();
 
         // 2. 사용자가 찜한(Scrap) 레시피 목록 조회
         List<RecipeScrap> scraps = recipeScrapRepository.findAllByMemberIdWithRecipe(memberId);
@@ -257,6 +262,9 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeResponseDTO.RecipeDTO> searchRecipe(RecipeRequestDTO.SearchRecipeDTO request) {
 
+        Member member = memberRepository.findByKakaoId(request.getKakaoId())
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
+
         // 1. 검색어가 없으면 빈 리스트 반환 (또는 전체 조회)
         if (request.getKeyword() == null || request.getKeyword().trim().isEmpty()) {
             return Collections.emptyList();
@@ -268,8 +276,8 @@ public class RecipeServiceImpl implements RecipeService {
         // 3. 필터 생성 (알레르기 필터)
         Filter.Builder filterBuilder = Filter.newBuilder();
 
-        if (Boolean.TRUE.equals(request.getExcludeAllergy()) && request.getMemberId() != null) {
-            List<MemberPreference> preferences = memberPreferenceRepository.findAllByMemberId(request.getMemberId());
+        if (Boolean.TRUE.equals(request.getExcludeAllergy()) && member.getId() != null) {
+            List<MemberPreference> preferences = memberPreferenceRepository.findAllByMemberId(member.getId());
             for (MemberPreference pref : preferences) {
                 // 알레르기 재료가 포함된 레시피 제외 (Must Not)
                 filterBuilder.addMustNot(Condition.newBuilder()
@@ -321,10 +329,10 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional
-    public RecipeResponseDTO.RecipeScrapDTO scrapRecipe(Long recipeId, Long memberId) {
+    public RecipeResponseDTO.RecipeScrapDTO scrapRecipe(Long recipeId, String kakaoId) {
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new recipeException(ErrorStatus._MEMBER_NOT_FOUND));
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new recipeException(ErrorStatus._RECIPE_NOT_FOUND));
@@ -334,22 +342,24 @@ public class RecipeServiceImpl implements RecipeService {
             throw new recipeException(ErrorStatus._SCRAP_ALREADY_EXISTS);
         }
 
-        // [변경 1] Converter를 사용해 Entity 생성
+        // Converter를 사용해 Entity 생성
         RecipeScrap scrap = RecipeScrapConverter.toRecipeScrap(member, recipe);
 
         // 저장
         recipeScrapRepository.save(scrap);
 
-        // [변경 2] Converter를 사용해 DTO 변환 및 반환
+        // Converter를 사용해 DTO 변환 및 반환
         return RecipeScrapConverter.toRecipeScrapDTO(scrap);
     }
 
-    // 2. 레시피 찜 취소하기 (반환값이 Void라 Converter 불필요)
     @Override
     @Transactional
-    public void deleteScrapRecipe(Long recipeId, Long memberId) {
+    public void deleteScrapRecipe(Long recipeId, String kakaoId) {
 
-        RecipeScrap scrap = recipeScrapRepository.findByMemberIdAndRecipeId(memberId, recipeId)
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
+
+        RecipeScrap scrap = recipeScrapRepository.findByMemberIdAndRecipeId(member.getId(), recipeId)
                 .orElseThrow(() -> new recipeException(ErrorStatus._SCRAP_NOT_FOUND));
 
         recipeScrapRepository.delete(scrap);

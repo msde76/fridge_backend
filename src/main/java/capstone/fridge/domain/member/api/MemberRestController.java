@@ -1,6 +1,8 @@
 package capstone.fridge.domain.member.api;
 
 import capstone.fridge.domain.member.application.MemberService;
+import capstone.fridge.domain.member.domain.entity.Member;
+import capstone.fridge.domain.member.domain.repository.MemberRepository;
 import capstone.fridge.domain.member.dto.MemberRequestDTO;
 import capstone.fridge.domain.member.dto.MemberResponseDTO;
 import capstone.fridge.global.common.response.BaseResponse;
@@ -12,12 +14,15 @@ import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class MemberRestController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회 API", description = "사용자의 정보에 대한 정보를 조회")
@@ -25,11 +30,9 @@ public class MemberRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<MemberResponseDTO.UserInfoDTO> getUserInfo(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam Long MemberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(MemberId);
+        MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.MEMBER_INFO, result);
     }
 
@@ -39,12 +42,10 @@ public class MemberRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 수정되었습니다.")
     })
     public BaseResponse<MemberResponseDTO.UserPreferencesDTO> setUserPreferences(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails,
-            @RequestParam Long MemberId,
+            @RequestParam String kakaoId,
             @RequestBody MemberRequestDTO.UserPreferencesDTO preferences
     ) {
-        //MemberResponseDTO.UserPreferencesDTO result = memberService.setUserPreferences(principalDetails.getMember().getId(), preferences);
-        MemberResponseDTO.UserPreferencesDTO result = memberService.setUserPreferences(MemberId, preferences);
+        MemberResponseDTO.UserPreferencesDTO result = memberService.setUserPreferences(kakaoId, preferences);
         return BaseResponse.onSuccess(SuccessStatus.MEMBER_PREFERENCE, result);
     }
 
@@ -54,11 +55,9 @@ public class MemberRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "MEMBER_200", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<MemberResponseDTO.UserScrapsDTO> getUserScraps(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam Long MemberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(principalDetails.getMember().getId());
-        MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(MemberId);
+        MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.MEMBER_SCRAPS, result);
     }
 }

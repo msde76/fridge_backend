@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,8 +30,8 @@ public class MemberServiceImpl implements MemberService {
     private final RecipeScrapRepository recipeScrapRepository;
 
     @Override
-    public MemberResponseDTO.UserInfoDTO getUserInfo(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public MemberResponseDTO.UserInfoDTO getUserInfo(String kakaoId) {
+        Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
         return MemberConverter.toUserInfoDTO(member);
@@ -38,8 +39,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberResponseDTO.UserPreferencesDTO setUserPreferences(Long memberId, MemberRequestDTO.UserPreferencesDTO request) {
-        Member member = memberRepository.findById(memberId)
+    public MemberResponseDTO.UserPreferencesDTO setUserPreferences(String kakaoId, MemberRequestDTO.UserPreferencesDTO request) {
+        Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
         // 기존 선호/기피 정보 모두 삭제 (Full Update 방식)
@@ -56,8 +57,8 @@ public class MemberServiceImpl implements MemberService {
 
     // 3. 찜한 레시피 목록 조회
     @Override
-    public MemberResponseDTO.UserScrapsDTO getUserScraps(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public MemberResponseDTO.UserScrapsDTO getUserScraps(String kakaoId) {
+        Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
         // 해당 멤버가 찜한 레시피 목록 조회

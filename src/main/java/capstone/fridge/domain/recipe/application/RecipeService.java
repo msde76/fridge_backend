@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeResponseDTO.RecipeDTO> recommendRecipes(Long memberId);
+    List<RecipeResponseDTO.RecipeDTO> recommendRecipes(String kakaoId);
 
-    List<RecipeResponseDTO.RecipeDTO> recommendMissingRecipes(Long memberId);
+    List<RecipeResponseDTO.RecipeDTO> recommendMissingRecipes(String kakaoId);
 
-    List<RecipeResponseDTO.RecipeDTO> recommendScrapsRecipes(Long memberId);
+    List<RecipeResponseDTO.RecipeDTO> recommendScrapsRecipes(String kakaoId);
 
     RecipeResponseDTO.RecipeInfoDTO getRecipe(Long recipeId);
 
     List<RecipeResponseDTO.RecipeDTO> searchRecipe(RecipeRequestDTO.SearchRecipeDTO request);
 
-    RecipeResponseDTO.RecipeScrapDTO scrapRecipe(Long recipeId, Long memberId);
+    RecipeResponseDTO.RecipeScrapDTO scrapRecipe(Long recipeId, String kakaoId);
 
-    void deleteScrapRecipe(Long recipeId, Long memberId);
+    void deleteScrapRecipe(Long recipeId, String kakaoId);
 }

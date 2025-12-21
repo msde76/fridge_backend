@@ -25,11 +25,9 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_200", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<List<RecipeResponseDTO.RecipeDTO>> recommendRecipes(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam Long memberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendRecipes(memberId);
+        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendRecipes(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE, result);
     }
 
@@ -39,11 +37,9 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_200", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<List<RecipeResponseDTO.RecipeDTO>> recommendMissingRecipes(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam Long memberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendMissingRecipes(memberId);
+        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendMissingRecipes(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE, result);
     }
 
@@ -53,11 +49,9 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_202", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<List<RecipeResponseDTO.RecipeDTO>> recommendScrapsRecipes(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
-            @RequestParam Long memberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendScrapsRecipes(memberId);
+        List<RecipeResponseDTO.RecipeDTO> result = recipeService.recommendScrapsRecipes(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE, result);
     }
 
@@ -67,10 +61,8 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_203", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<RecipeResponseDTO.RecipeInfoDTO> getRecipe(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
             @PathVariable Long recipeId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
         RecipeResponseDTO.RecipeInfoDTO result = recipeService.getRecipe(recipeId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE_INFO, result);
     }
@@ -81,10 +73,8 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_204", description = "OK, 성공적으로 조회되었습니다.")
     })
     public BaseResponse<List<RecipeResponseDTO.RecipeDTO>> searchRecipe(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
             @ModelAttribute RecipeRequestDTO.SearchRecipeDTO request
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
         List<RecipeResponseDTO.RecipeDTO> result = recipeService.searchRecipe(request);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE_FIND, result);
     }
@@ -95,12 +85,10 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_205", description = "OK, 성공적으로 찜 되었습니다.")
     })
     public BaseResponse<RecipeResponseDTO.RecipeScrapDTO> scrapRecipe(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
             @PathVariable Long recipeId,
-            @RequestParam Long memberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        RecipeResponseDTO.RecipeScrapDTO result = recipeService.scrapRecipe(recipeId, memberId);
+        RecipeResponseDTO.RecipeScrapDTO result = recipeService.scrapRecipe(recipeId, kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE_SCRAP, result);
     }
 
@@ -110,12 +98,10 @@ public class RecipeRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse( responseCode = "RECIPE_206", description = "OK, 성공적으로 취소되었습니다.")
     })
     public BaseResponse<Void> deleteScrapRecipe(
-            //@AuthenticationPrincipal PrincipalDetails principalDetails
             @PathVariable Long recipeId,
-            @RequestParam Long memberId
+            @RequestParam String kakaoId
     ) {
-        //MemberResponseDTO.UserInfoDTO result = memberService.getUserInfo(principalDetails.getMember().getId());
-        recipeService.deleteScrapRecipe(recipeId, memberId);
+        recipeService.deleteScrapRecipe(recipeId, kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.RECIPE_DELETE_SCRAP, null);
     }
 }

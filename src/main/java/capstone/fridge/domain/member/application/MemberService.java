@@ -5,9 +5,9 @@ import capstone.fridge.domain.member.dto.MemberResponseDTO;
 
 public interface MemberService {
 
-    MemberResponseDTO.UserInfoDTO getUserInfo(Long memberId);
+    MemberResponseDTO.UserInfoDTO getUserInfo(String kakaoId);
 
-    MemberResponseDTO.UserPreferencesDTO setUserPreferences(Long memberId, MemberRequestDTO.UserPreferencesDTO request);
+    MemberResponseDTO.UserPreferencesDTO setUserPreferences(String kakaoId, MemberRequestDTO.UserPreferencesDTO request);
 
-    MemberResponseDTO.UserScrapsDTO getUserScraps(Long memberId);
+    MemberResponseDTO.UserScrapsDTO getUserScraps(String kakaoId);
 }
