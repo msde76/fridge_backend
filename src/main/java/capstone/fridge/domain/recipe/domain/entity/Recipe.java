@@ -35,8 +35,8 @@ public class Recipe extends BaseTimeEntity {
     private String difficulty; // 난이도 (예: 아무나)
 
     // 정렬을 위한 외부 데이터 (선택사항)
-    private Long externalViews; // 조회수
-    private Long externalScraps; // 스크랩수
+    private Long externalViews = 0L; // 조회수
+    private Long externalScraps = 0L; // 스크랩수
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
@@ -53,8 +53,8 @@ public class Recipe extends BaseTimeEntity {
         this.servings = servings;
         this.cookTime = cookTime;
         this.difficulty = difficulty;
-        this.externalViews = externalViews;
-        this.externalScraps = externalScraps;
+        this.externalViews = (externalViews != null) ? externalViews : 0L;
+        this.externalScraps = (externalScraps != null) ? externalScraps : 0L;
     }
 
     public void increaseViewCount() {
