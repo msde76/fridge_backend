@@ -63,4 +63,20 @@ public class Recipe extends BaseTimeEntity {
         }
         this.externalViews++;
     }
+
+    public void increaseScrapsCount() {
+        if (this.externalScraps == null) {
+            this.externalScraps = 0L;
+        }
+        this.externalScraps++;
+    }
+
+    public void decreaseScrapsCount() {
+        if (this.externalScraps == null) {
+            this.externalScraps = 0L;
+        }
+        if (this.externalScraps > 0) {
+            this.externalScraps--;
+        }
+    }
 }

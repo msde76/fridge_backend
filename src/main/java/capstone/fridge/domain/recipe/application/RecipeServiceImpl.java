@@ -348,6 +348,9 @@ public class RecipeServiceImpl implements RecipeService {
         // 저장
         recipeScrapRepository.save(scrap);
 
+        // 스크랩 횟수 증가
+        recipe.increaseScrapsCount();
+
         // Converter를 사용해 DTO 변환 및 반환
         return RecipeScrapConverter.toRecipeScrapDTO(scrap);
     }
@@ -361,6 +364,11 @@ public class RecipeServiceImpl implements RecipeService {
 
         RecipeScrap scrap = recipeScrapRepository.findByMemberIdAndRecipeId(member.getId(), recipeId)
                 .orElseThrow(() -> new recipeException(ErrorStatus._SCRAP_NOT_FOUND));
+
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new recipeException(ErrorStatus._RECIPE_NOT_FOUND));
+
+        recipe.decreaseScrapsCount();
 
         recipeScrapRepository.delete(scrap);
     }
