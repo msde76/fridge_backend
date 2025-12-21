@@ -53,6 +53,9 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	implementation 'com.google.cloud:google-cloud-vision:3.76.0'
+
+	// 벡터 DB
+	implementation 'io.qdrant:client:1.11.0'
 }
 
 tasks.named('test') {

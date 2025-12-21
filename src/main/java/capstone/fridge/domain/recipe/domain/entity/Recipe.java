@@ -46,7 +46,7 @@ public class Recipe extends BaseTimeEntity {
 
     @Builder
     public Recipe(Long originalRecipeId, String title, String description,
-                  String servings, String cookTime, String difficulty, Long externalViews) {
+                  String servings, String cookTime, String difficulty, Long externalViews, Long externalScraps) {
         this.originalRecipeId = originalRecipeId;
         this.title = title;
         this.description = description;
@@ -54,5 +54,13 @@ public class Recipe extends BaseTimeEntity {
         this.cookTime = cookTime;
         this.difficulty = difficulty;
         this.externalViews = externalViews;
+        this.externalScraps = externalScraps;
+    }
+
+    public void increaseViewCount() {
+        if (this.externalViews == null) {
+            this.externalViews = 0L;
+        }
+        this.externalViews++;
     }
 }

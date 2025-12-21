@@ -3,7 +3,7 @@ spring:
     active: dev
   datasource:
     username: root
-    password: ehrtnfl99@
+    password: thdtjdghks2@
     url: jdbc:mysql://localhost:3306/fridge
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -31,6 +31,7 @@ logging:
 app:
   fastapi:
     base-url: http://localhost:8001
+
   kakao:
     client-id: ${KAKAO_CLIENT_ID}
     client-secret: ${KAKAO_CLIENT_SECRET}   # 네 앱이 secret 쓰면
@@ -39,4 +40,10 @@ app:
       secret: ${JWT_SECRET}                   # 최소 32바이트 이상 권장
       access-exp-sec: 3600                    # 1시간
       refresh-exp-sec: 1209600                # 14일
+
+
+
+qdrant:
+  url: ${qdrant_URL}
+  api-key: ${QDRANT_API_KEY}
 

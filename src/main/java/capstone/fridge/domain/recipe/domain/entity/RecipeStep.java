@@ -1,5 +1,6 @@
 package capstone.fridge.domain.recipe.domain.entity;
 
+import capstone.fridge.domain.model.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "recipe_step")
-public class RecipeStep {
+public class RecipeStep extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

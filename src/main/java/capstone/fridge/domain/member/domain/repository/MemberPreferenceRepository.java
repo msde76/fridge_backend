@@ -12,4 +12,6 @@ public interface MemberPreferenceRepository extends JpaRepository<MemberPreferen
     List<MemberPreference> findAllByMember(Member member);
 
 
+    List<MemberPreference> findAllByMemberId(Long memberId);
+
 }
