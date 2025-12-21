@@ -66,4 +66,17 @@ public class MemberServiceImpl implements MemberService {
 
         return MemberConverter.toUserScrapsDTO(scrapList);
     }
+
+    @Override
+    public MemberResponseDTO.OnboardingStatusDTO checkOnboardingStatus(String kakaoId) {
+        // 1. 회원 조회
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
+
+        // 2. 온보딩 여부 판단 로직
+        boolean isOnboarded = (member.getAge() != null && member.getGender() != null);
+
+        // 3. Converter를 사용하여 결과 반환
+        return MemberConverter.toOnboardingStatusDTO(member, isOnboarded);
+    }
 }

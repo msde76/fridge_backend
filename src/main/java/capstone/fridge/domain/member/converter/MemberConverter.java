@@ -94,4 +94,11 @@ public class MemberConverter {
                 .scrapList(scrapDTOs)
                 .build();
     }
+
+    public static MemberResponseDTO.OnboardingStatusDTO toOnboardingStatusDTO(Member member, boolean isOnboarded) {
+        return MemberResponseDTO.OnboardingStatusDTO.builder()
+                .memberId(member.getId())
+                .isOnboarded(isOnboarded)
+                .build();
+    }
 }

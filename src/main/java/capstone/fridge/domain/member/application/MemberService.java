@@ -10,4 +10,6 @@ public interface MemberService {
     MemberResponseDTO.UserPreferencesDTO setUserPreferences(String kakaoId, MemberRequestDTO.UserPreferencesDTO request);
 
     MemberResponseDTO.UserScrapsDTO getUserScraps(String kakaoId);
+
+    MemberResponseDTO.OnboardingStatusDTO checkOnboardingStatus(String kakaoId);
 }
