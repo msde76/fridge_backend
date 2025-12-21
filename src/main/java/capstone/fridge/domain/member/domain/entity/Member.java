@@ -28,15 +28,21 @@ public class Member extends BaseTimeEntity {
 
     private String profileImageUrl;
 
+    private String age;
+
+    private String gender;
+
     // 알레르기 및 기피 음식 (1:N)
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPreference> preferences = new ArrayList<>();
 
     @Builder
-    public Member(String kakaoId, String nickname, String email, String profileImageUrl) {
+    public Member(String kakaoId, String nickname, String email, String profileImageUrl, String age, String gender) {
         this.kakaoId = kakaoId;
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
+        this.age = age;
+        this.gender = gender;
     }
 }

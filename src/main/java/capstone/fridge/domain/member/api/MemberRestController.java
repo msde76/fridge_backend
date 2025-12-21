@@ -60,4 +60,17 @@ public class MemberRestController {
         MemberResponseDTO.UserScrapsDTO result = memberService.getUserScraps(kakaoId);
         return BaseResponse.onSuccess(SuccessStatus.MEMBER_SCRAPS, result);
     }
+
+    @GetMapping("/onboarding/check")
+    @Operation(summary = "온보딩 여부 확인 API", description = "사용자가 나이, 성별 등 필수 정보를 입력했는지 확인")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER_200", description = "OK, 성공적으로 조회되었습니다.")
+    })
+    public BaseResponse<MemberResponseDTO.OnboardingStatusDTO> checkOnboarding(
+            @RequestParam String kakaoId
+    ) {
+        MemberResponseDTO.OnboardingStatusDTO result = memberService.checkOnboardingStatus(kakaoId);
+
+        return BaseResponse.onSuccess(SuccessStatus.OK, result);
+    }
 }
