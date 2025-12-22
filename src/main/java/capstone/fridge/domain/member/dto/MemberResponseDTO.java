@@ -25,6 +25,8 @@ public class MemberResponseDTO {
     public static class UserPreferencesDTO {
         private List<String> allergies;
         private List<String> dislikes;
+        private String age;
+        private String gender;
     }
 
     @Builder

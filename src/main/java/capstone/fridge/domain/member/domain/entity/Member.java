@@ -45,4 +45,13 @@ public class Member extends BaseTimeEntity {
         this.age = age;
         this.gender = gender;
     }
+
+    public void updateProfile(String age, String gender) {
+        if (age != null) {
+            this.age = age;
+        }
+        if (gender != null) {
+            this.gender = gender;
+        }
+    }
 }

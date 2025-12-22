@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,16 +42,19 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseThrow(() -> new memberException(ErrorStatus._MEMBER_NOT_FOUND));
 
-        // 기존 선호/기피 정보 모두 삭제 (Full Update 방식)
+        // 1. 나이, 성별 업데이트 (값이 있을 때만 Entity 내부에서 변경됨)
+        member.updateProfile(request.getAge(), request.getGender());
+
+        // 2. 기존 선호/기피 정보 모두 삭제 (Full Update 방식)
         List<MemberPreference> existingPreferences = memberPreferenceRepository.findAllByMember(member);
         memberPreferenceRepository.deleteAll(existingPreferences);
 
-        // 2. 새로운 정보 리스트 생성 (Converter 활용)
+        // 3. 새로운 정보 리스트 생성 및 저장
         List<MemberPreference> newPreferences = MemberConverter.toMemberPreferenceEntities(member, request);
-
         memberPreferenceRepository.saveAll(newPreferences);
 
-        return MemberConverter.toUserPreferencesDTO(newPreferences);
+        // 4. Converter에 member 객체도 함께 전달 (나이, 성별 응답을 위해)
+        return MemberConverter.toUserPreferencesDTO(member, newPreferences);
     }
 
     // 3. 찜한 레시피 목록 조회

@@ -28,7 +28,8 @@ public class MemberConverter {
     }
 
     // List<MemberPreference> -> UserPreferencesDTO (Response)
-    public static MemberResponseDTO.UserPreferencesDTO toUserPreferencesDTO(List<MemberPreference> preferences) {
+    public static MemberResponseDTO.UserPreferencesDTO toUserPreferencesDTO(Member member, List<MemberPreference> preferences) {
+
         List<String> allergies = preferences.stream()
                 .filter(p -> p.getType() == PreferenceType.ALLERGY)
                 .map(MemberPreference::getIngredientName)
@@ -42,6 +43,8 @@ public class MemberConverter {
         return MemberResponseDTO.UserPreferencesDTO.builder()
                 .allergies(allergies)
                 .dislikes(dislikes)
+                .age(member.getAge())
+                .gender(member.getGender())
                 .build();
     }
 
